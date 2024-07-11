@@ -12,7 +12,10 @@ Or you can build all the example packages:
 ```
 colcon build --symlink-install --parallel-workers $(nproc)
 ```
-
+Source the generated bash script after building:
+```
+source install/setup.bash
+```
 Now we can launch the stack:
 ```
 obk-launch config_file_path=dummy_cpp.yaml device_name=onboard
