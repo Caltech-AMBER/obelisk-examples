@@ -1,0 +1,67 @@
+config: dummy_bot
+onboard:
+  control:
+    pkg: dummy_bot_cpp
+    executable: position_setpoint_controller
+    publishers:
+      - ros_parameter: pub_ctrl_setting
+        topic: /obelisk/dummy_bot/ctrl
+        msg_type: PositionSetpoint
+        history_depth: 10
+        callback_group: None
+        non_obelisk: False
+    subscribers:
+      - ros_parameter: sub_est_setting
+        topic: /obelisk/dummy_bot/est
+        msg_type: EstimatedState
+        history_depth: 10
+        callback_group: None
+        non_obelisk: False
+    timers:
+      - ros_parameter: timer_ctrl_setting
+        timer_period_sec: 0.001
+        callback_group: None
+  estimation:
+    pkg: dummy_bot_cpp
+    executable: jointencoders_passthrough_estimator
+    publishers:
+      - ros_parameter: pub_est_setting
+        topic: /obelisk/dummy_bot/est
+        msg_type: EstimatedState
+        history_depth: 10
+        callback_group: None
+        non_obelisk: False
+    subscribers:
+      - ros_parameter: sub_sensor_setting
+        topic: /obelisk/dummy_bot/sensor
+        msg_type: JointEncoders
+        history_depth: 10
+        callback_group: None
+        non_obelisk: False
+    timers:
+      - ros_parameter: timer_est_setting
+        timer_period_sec: 0.001
+        callback_group: None
+  robot:
+    is_simulated: True
+    pkg: dummy_bot_cpp
+    executable: obelisk_mujoco_robot
+    subscribers:
+      - ros_parameter: sub_ctrl_setting
+        topic: /obelisk/dummy/ctrl
+        msg_type: PositionSetpoint
+        history_depth: 10
+        callback_group: None
+        non_obelisk: False
+    sim:
+      - ros_parameter: mujoco_setting
+        model_xml_path: dummy/dummy.xml
+        n_u: 1
+        time_step: 0.002
+        num_steps_per_viz: 5
+        sensor_settings:
+        - topic: /obelisk/dummy_bot/sensor
+          dt: 0.001
+          sensor_type: jointpos
+          sensor_names:
+          - sensor_joint1
