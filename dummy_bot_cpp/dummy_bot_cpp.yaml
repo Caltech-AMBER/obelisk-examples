@@ -48,7 +48,7 @@ onboard:
     executable: obelisk_mujoco_robot
     subscribers:
       - ros_parameter: sub_ctrl_setting
-        topic: /obelisk/dummy/ctrl
+        topic: /obelisk/dummy_bot/ctrl
         msg_type: PositionSetpoint
         history_depth: 10
         callback_group: None
