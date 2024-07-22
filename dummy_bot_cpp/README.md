@@ -8,11 +8,7 @@ Start the docker container:
 cd docker
 docker compose -f docker-compose.yml run --build obelisk_examples
 ```
-Source base ROS:
-```
-source /opt/ros/humble/setup.bash
-```
-Build, activate Obelisk settings, and source it all using one command:
+Source base ROS, build Obelisk, activate Obelisk settings, and source Obelisk using one command:
 ```
 obk
 ```
