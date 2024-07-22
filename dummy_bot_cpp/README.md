@@ -12,11 +12,7 @@ Source base ROS:
 ```
 source /opt/ros/humble/setup.bash
 ```
-Build Obelisk:
-```
-obk-build
-```
-Activate Obelisk settings and source it:
+Build, activate Obelisk settings, and source it all using one command:
 ```
 obk
 ```
