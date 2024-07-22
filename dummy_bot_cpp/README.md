@@ -25,5 +25,3 @@ Now we can launch the stack:
 ```
 obk-launch config_file_path="${OBELISK_EXAMPLES_ROOT}/dummy_bot_cpp/dummy_bot_cpp.yaml" device_name=onboard
 ```
-## Dev TODOs
-Once `trim-deps` is merged into `main` on `obelisk`, edit this example's Dockerfile accordingly.
