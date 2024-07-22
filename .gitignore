@@ -26,6 +26,9 @@
 *.a
 *.lib
 
+# Docker
+*.env
+
 # Executables
 *.exe
 *.out

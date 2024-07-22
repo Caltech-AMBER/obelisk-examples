@@ -8,34 +8,22 @@ SHELL ["/bin/bash", "-c"]
 ARG USER=user
 ARG UID=1000
 ARG GID=1000
-ARG OBELISK_ROOT=/
+ARG OBELISK_EXAMPLES_ROOT=/
 ENV USER=$USER
 ENV UID=$UID
 ENV GID=$GID
-ENV OBELISK_ROOT=$OBELISK_ROOT
+ENV OBELISK_EXAMPLES_ROOT=$OBELISK_EXAMPLES_ROOT
+ENV XDG_RUNTIME_DIR=/run/user/${UID}
 
 # set timezone
 ENV TZ=America/Los_Angeles
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# basic dependencies from docker_setup.sh (up until sudo and below)
+# basic dependencies that are not handled by pixi
 RUN apt-get update && apt-get install -y \
     curl \
-    build-essential \
-    cmake \
-    clang-tools-12 \
-    nano \
-    vim \
     git \
-    python3-dev \
-    python-is-python3 \
-    python3-pip \
-    python3-argcomplete \
-    mesa-utils \
-    x11-apps \
-    libyaml-dev \
     mesa-common-dev \
-    libglfw3-dev \
     locales \
     sudo && \
     rm -rf /var/lib/apt/lists/* && \
@@ -48,15 +36,16 @@ RUN groupadd --gid $GID $USER && \
     usermod -aG sudo ${USER} && \
     echo "%${USER} ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
+# add user to dialout group to enable serial port access from the container
+RUN usermod -a -G dialout ${USER}
+
 # switch to new user and workdir
 USER ${UID}
 
-# run docker setup script in Dockerfile
-COPY docker_setup.sh /tmp/docker_setup.sh
-RUN source /tmp/docker_setup.sh --skip-docker && \
-    sudo rm /tmp/docker_setup.sh
+# clone Obelisk into this docker image at the $OBELISK_ROOT path
+RUN git clone -b trim-deps https://github.com/Caltech-AMBER/obelisk.git /home/${USER}/obelisk
+ENV OBELISK_ROOT=/home/${USER}/obelisk
 
-# add local user binary folder to PATH variable
-ENV PATH="${PATH}:/home/${USER}/.local/bin"
-ENV XDG_RUNTIME_DIR=/run/user/${UID}
-WORKDIR /home/${USER}
+# run docker setup script in Dockerfile
+RUN source /home/${USER}/obelisk/setup.sh --pixi --cyclone-perf && \
+    bash /home/${USER}/obelisk/scripts/install_sys_deps.sh -y --no-source-ros
