@@ -43,9 +43,8 @@ RUN usermod -a -G dialout ${USER}
 USER ${UID}
 
 # clone Obelisk into this docker image at the $OBELISK_ROOT path
-RUN git clone https://github.com/Caltech-AMBER/obelisk.git /home/${USER}/obelisk
+RUN git clone -b hardware-zed-cams https://github.com/Caltech-AMBER/obelisk.git /home/${USER}/obelisk
 ENV OBELISK_ROOT=/home/${USER}/obelisk
 
 # run docker setup script in Dockerfile
-RUN source /home/${USER}/obelisk/setup.sh --pixi --cyclone-perf && \
-    bash /home/${USER}/obelisk/scripts/install_sys_deps.sh -y --no-source-ros
+RUN source /home/${USER}/obelisk/setup.sh --install-sys-deps --cyclone-perf --obk-aliases --basic --leap --zed
