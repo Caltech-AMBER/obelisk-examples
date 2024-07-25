@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # base image
-FROM ubuntu:22.04 as base
+FROM ubuntu:22.04 AS base
 SHELL ["/bin/bash", "-c"]
 
 # username, uid, gid
@@ -46,5 +46,7 @@ USER ${UID}
 RUN git clone -b hardware-zed-cams https://github.com/Caltech-AMBER/obelisk.git /home/${USER}/obelisk
 ENV OBELISK_ROOT=/home/${USER}/obelisk
 
+# you must run the setup script from a directory where the user has permissions
 # run docker setup script in Dockerfile
+WORKDIR /home/${USER}
 RUN source /home/${USER}/obelisk/setup.sh --install-sys-deps --cyclone-perf --obk-aliases --basic --leap --zed

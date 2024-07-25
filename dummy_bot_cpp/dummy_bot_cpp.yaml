@@ -66,4 +66,4 @@ onboard:
             dt: 0.001
             msg_type: ObkJointEncoders
             sensor_names:
-              jointpos: joint_pos
+              joint_pos: jointpos
