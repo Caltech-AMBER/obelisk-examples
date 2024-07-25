@@ -39,3 +39,4 @@ install/
 log/
 
 obk_logs/
+.env
