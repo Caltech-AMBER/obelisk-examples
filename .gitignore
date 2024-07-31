@@ -40,3 +40,6 @@ log/
 
 obk_logs/
 .env
+
+# vscode
+.vscode/

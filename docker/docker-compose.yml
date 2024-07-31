@@ -23,6 +23,7 @@ services:
       - seccomp=unconfined
     cap_add:
       - NET_ADMIN
+      - SYS_NICE
     volumes:
       - ./../:$OBELISK_EXAMPLES_ROOT
       - /tmp/.X11-unix:/tmp/.X11-unix
